@@ -15,7 +15,7 @@ def main():
 	output_raw = open(osp.join('data',f'{output_file}_raw.json'),'w')
 
 
-	for post in get_posts('/r/politics',output_raw):
+	for post in get_posts('/r/conservative',output_raw):
 		json.dump(post,output_clean,indent=4)
 		output_clean.write('\n')
 
