@@ -16,7 +16,7 @@ def main():
 
 
 	for post in get_posts('/r/conservative',output_raw):
-		json.dump(post,output_clean,indent=4)
+		json.dump(post,output_clean)
 		output_clean.write('\n')
 
 def get_posts(subreddit,output_raw):
@@ -32,7 +32,7 @@ def get_posts(subreddit,output_raw):
 		for post in content_list:
 			reddit_post = post['data']
 			if biden_trump_mentioned(reddit_post) != 0 :
-				if len(list) <= 333:
+				if len(list) <= 334:
 					json.dump(post,output_raw)
 					output_raw.write('\n')
 					list.append(create_output_dict(reddit_post))
