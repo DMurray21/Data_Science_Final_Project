@@ -5,7 +5,8 @@ import warnings
 import argparse
 import numpy as np
 import nltk
-
+import operator
+stopwords = nltk.corpus.stopwords.words("english")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -22,7 +23,6 @@ def main():
             if not (code in codes): 
                 codes[code]=[]
             codes[code] +=  [post]
-    stopwords = nltk.corpus.stopwords.words("english")
     tokenizer = nltk.RegexpTokenizer(r"\w+")
 
     clean = {}
@@ -44,7 +44,7 @@ def tf_idf(titles):
     scores = {}
     for title in titles:
         for word in title:
-            if not(word in words):
+            if not(word in words or word in stopwords):
                 words += [word] 
     for word in words:
         tf=0
@@ -53,8 +53,13 @@ def tf_idf(titles):
             tf += (np.array(title)==word).sum()
             df += (word in title)
         scores[word] = np.log(tf/df)
+    top = {}
+    for i in range(10):
+        key = max(scores.items(), key=operator.itemgetter(1))[0]
+        top[key] = scores.pop(key)
+    
 
-    return scores
+    return top
             
 
 if __name__ == "__main__":
