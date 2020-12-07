@@ -21,6 +21,7 @@ def main():
     ## Convert to dataframe (for ease of use)
     df = utils.data_to_frame(data)
 
+    ## Annotate with source
     df['source'] =df['associated_url'].map(lambda x: utils.extract_domain(x))
 
 
@@ -34,8 +35,9 @@ def main():
 
     topic_ratios = df['code'].value_counts(normalize=True)
 
+    print("Overall Topic Ratios:")
     print(topic_ratios)
-
+    print()
 
     # Sources
 
@@ -44,6 +46,7 @@ def main():
     source_counts = df['source'].value_counts()
     most_common = [source for source in zip(source_counts.index[:5], source_counts[:5])]
     print(f"The five most common sources in this dataset are {most_common}")
+    print()
 
 
     ## Topics for common sources
@@ -62,7 +65,6 @@ def main():
 
     full_source = pd.DataFrame({(k + " (n=" + str(c) + ")"):v for k,v,c in source_dfs})
 
-    print(full_source)
     # Plot
 
     if args.plots is not None:
