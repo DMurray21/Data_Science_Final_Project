@@ -6,6 +6,7 @@ import argparse
 import numpy as np
 import nltk
 import operator
+from nltk.stem import WordNetLemmatizer 
 stopwords = nltk.corpus.stopwords.words("english")
 
 def main():
@@ -24,7 +25,7 @@ def main():
                 codes[code]=[]
             codes[code] +=  [post]
     tokenizer = nltk.RegexpTokenizer(r"\w+")
-
+    lemmatizer = WordNetLemmatizer() 
     clean = {}
     for code in codes:
         group=codes[code]
@@ -32,11 +33,13 @@ def main():
         for post in group:
             post = post["title"].lower()
             post = tokenizer.tokenize(post)
+            for i in range(len(post)):
+                post[i] = lemmatizer.lemmatize(post[i])
             clean[code] += [post]
     
     for code in clean:
         score = tf_idf(clean[code])
-        print(score)
+        print(f"The tf-idf scors for {code} topic: {score}")
 
 
 def tf_idf(titles):
